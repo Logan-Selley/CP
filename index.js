@@ -2,7 +2,7 @@
 Logan Selley
 4/23/2018
 CSE 154 AM
-CP4 JS
+CP5 JS
 
 javascript to handle user interaction for a personal webpage
 */
@@ -16,6 +16,10 @@ javascript to handle user interaction for a personal webpage
         addBTN.onclick = add;
         let removeBTN = document.getElementById("remove");
         removeBTN.onclick = remove;
+        document.getElementById("gif-btn").onclick = ajax;
+        let gif = document.createElement('img');
+        document.getElementById("gif").appendChild(gif);
+        gif.setAttribute('id', 'giphy');
     }
 
     // activate popup upon button press
@@ -33,7 +37,7 @@ javascript to handle user interaction for a personal webpage
     function add() {
         let img = document.createElement('img');
         img.setAttribute('class', 'wolf');
-        img.setAttribute('src', '../cp4/imgs/wolfgirl.jpg');
+        img.setAttribute('src', '../CP/imgs/wolfgirl.jpg');
         img.setAttribute('alt', 'Wolf Girl');
         img.setAttribute('height', 100);
         img.setAttribute('width', 100);
@@ -46,5 +50,30 @@ javascript to handle user interaction for a personal webpage
         while(imgs[0]) {
             imgs[0].parentNode.removeChild(imgs[0]);
         }
+    }
+
+    // stolen from the cheat sheet
+    function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response.text();
+        } else {
+            return Promise.reject(new Error(response.status + ": " + response.statusText))
+        }
+    }
+
+    // request and manipulate api data (giphy API)
+    function ajax() {
+        let url = "https://api.giphy.com/v1/gifs/random?api_key=PHw0obOJoK2tPalBlxEqfksuhJyi3K0V&tag=&rating=PG"
+        fetch(url)
+            .then(checkStatus)
+            .then(JSON.parse)
+            .then(function(response) {
+                console.log("success", response)
+                let source = response.data.images.original.url;
+                document.getElementById('giphy').setAttribute('src', source);
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
     }
 })();
