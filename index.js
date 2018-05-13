@@ -20,6 +20,7 @@ javascript to handle user interaction for a personal webpage
         let gif = document.createElement('img');
         document.getElementById("gif").appendChild(gif);
         gif.setAttribute('id', 'giphy');
+        anime();
     }
 
     // activate popup upon button press
@@ -74,6 +75,20 @@ javascript to handle user interaction for a personal webpage
             })
             .catch(function(error) {
                 console.log(error)
+            })
+    }
+
+    function anime() {
+        let url = "./api.php";
+
+        fetch(url)
+            .then(checkStatus)
+            .then(JSON.parse)
+            .then(function(response) {
+                document.getElementById("recs").innerText = response;
+            })
+            .catch(function(error) {
+                console.log(error);
             })
     }
 })();
